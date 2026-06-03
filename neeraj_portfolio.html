@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neeraj Burra — HR & Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a08;
+    --bg2: #111110;
+    --surface: #181815;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --cream: #f2ead8;
+    --cream-dim: rgba(242,234,216,0.6);
+    --muted: rgba(242,234,216,0.35);
+    --accent: #8fb8a0;
+    --accent2: #b5d4c3;
+    --red: #c96a5a;
+    --border: rgba(201,168,76,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor { position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--gold2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s cubic-bezier(.23,1,.32,1);
+    opacity: 0.7;
+  }
+  body:hover .cursor-dot { transform: translate(-50%,-50%) scale(1); }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,8,0.7);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; letter-spacing: 0.05em;
+    color: var(--gold2);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1px; background: var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(8rem, 20vw, 22rem);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.04em;
+    animation: bgTextDrift 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgTextDrift {
+    from { transform: translate(-52%, -50%) rotate(-2deg); }
+    to { transform: translate(-48%, -50%) rotate(1deg); }
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--gold);
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300; line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--gold2); }
+
+  .hero-title {
+    font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+  }
+  .hero-title span { color: var(--muted); margin: 0 0.5rem; }
+
+  .hero-bio {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; line-height: 1.75;
+    color: var(--cream-dim); max-width: 480px;
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1.2rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s 1s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold2);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--cream-dim);
+    font-family: 'DM Mono', monospace;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* HERO RIGHT — Stats Orb */
+  .hero-right {
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 2;
+    opacity: 0; animation: fadeIn 1.2s 0.6s forwards;
+  }
+
+  .orb-container {
+    position: relative; width: 380px; height: 380px;
+  }
+  .orb-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid var(--border);
+    animation: orbit 12s linear infinite;
+  }
+  .orb-ring:nth-child(1) { inset: 0; animation-duration: 20s; }
+  .orb-ring:nth-child(2) { inset: 30px; animation-duration: 14s; animation-direction: reverse; border-color: rgba(143,184,160,0.2); }
+  .orb-ring:nth-child(3) { inset: 70px; animation-duration: 8s; border-color: rgba(201,168,76,0.25); }
+
+  @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .orb-center {
+    position: absolute; inset: 90px;
+    background: radial-gradient(circle at 30% 30%, rgba(201,168,76,0.15), rgba(10,10,8,0.9));
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.3rem;
+  }
+  .orb-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 300;
+    color: var(--gold2); line-height: 1;
+  }
+  .orb-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); text-align: center;
+  }
+
+  .orb-dot {
+    position: absolute; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold);
+  }
+
+  .stat-bubble {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.8rem 1.2rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
+  .stat-bubble:nth-of-type(1) { top: 20px; right: -20px; }
+  .stat-bubble:nth-of-type(2) { bottom: 40px; left: -30px; }
+  .stat-bubble:nth-of-type(3) { top: 120px; left: -40px; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--gold);
+  }
+  .stat-desc {
+    font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted);
+    text-transform: uppercase; margin-top: 2px;
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-ind {
+    position: absolute; bottom: 3rem; left: 4rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-line {
+    width: 60px; height: 1px; background: var(--border);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%; background: var(--gold);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { left: -100%; } 100% { left: 100%; }
+  }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; position: relative; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  .section-num {
+    font-size: 0.65rem; letter-spacing: 0.25em;
+    color: var(--gold); opacity: 0.7;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300; color: var(--cream);
+  }
+  .section-title em { font-style: italic; color: var(--gold2); }
+  .section-line {
+    flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* EXPERTISE */
+  #expertise { background: var(--bg2); }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .skill-tag {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+    cursor: default;
+    background: var(--surface);
+  }
+  .skill-tag::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold-dim);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .skill-tag:hover { color: var(--gold2); border-color: var(--gold); }
+  .skill-tag:hover::before { transform: translateX(0); }
+  .skill-tag span { position: relative; z-index: 1; }
+
+  .expertise-categories {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem; margin-bottom: 3rem;
+  }
+  .cat-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .cat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .cat-card:hover { border-color: rgba(201,168,76,0.4); }
+  .cat-card:hover::before { transform: scaleX(1); }
+  .cat-icon {
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+  .cat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .cat-desc {
+    font-size: 0.78rem; line-height: 1.7; color: var(--muted);
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg); }
+
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+
+  .exp-item {
+    position: relative; margin-bottom: 4rem;
+    padding-left: 2rem;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(.23,1,.32,1);
+  }
+  .exp-item.visible { opacity: 1; transform: translateY(0); }
+  .exp-item::before {
+    content: ''; position: absolute;
+    left: -2rem; top: 0.5rem;
+    width: 9px; height: 9px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 16px rgba(201,168,76,0.5);
+    transform: translateX(-4px);
+  }
+
+  .exp-period {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.4rem;
+  }
+  .exp-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600;
+    color: var(--cream); margin-bottom: 0.3rem;
+  }
+  .exp-company {
+    font-size: 0.75rem; letter-spacing: 0.12em;
+    color: var(--accent2); margin-bottom: 1.2rem;
+  }
+  .exp-highlights {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .exp-highlight {
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* POWER BI */
+  #powerbi { background: var(--bg2); }
+
+  .pbi-showcase {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .pbi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s;
+    group: true;
+  }
+  .pbi-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .pbi-card-header {
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(143,184,160,0.08));
+    padding: 2rem 1.5rem 1.5rem;
+    position: relative; min-height: 120px;
+    display: flex; align-items: flex-end;
+  }
+  .pbi-icon {
+    position: absolute; top: 1rem; right: 1rem;
+    font-size: 2.5rem; opacity: 0.3;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .pbi-card:hover .pbi-icon { opacity: 0.6; transform: scale(1.15) rotate(-5deg); }
+  .pbi-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--cream);
+  }
+  .pbi-card-body { padding: 1.5rem; }
+  .pbi-card-desc {
+    font-size: 0.75rem; line-height: 1.7; color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .pbi-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    transition: gap 0.3s;
+  }
+  .pbi-link:hover { gap: 0.8rem; }
+
+  /* SKILLS METERS */
+  #skills { background: var(--bg); }
+
+  .skills-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  }
+
+  .skill-meter { margin-bottom: 2rem; }
+  .skill-meter-header {
+    display: flex; justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .skill-meter-name {
+    font-size: 0.72rem; letter-spacing: 0.1em; color: var(--cream-dim);
+  }
+  .skill-meter-val {
+    font-size: 0.65rem; color: var(--gold);
+  }
+  .skill-bar {
+    height: 2px; background: rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+  .skill-fill {
+    position: absolute; top: 0; left: 0; height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 1.2s cubic-bezier(.23,1,.32,1);
+  }
+  .skill-fill.animated { transform: scaleX(1); }
+
+  /* ABOUT */
+  #about { background: var(--bg2); }
+
+  .about-layout {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem;
+    align-items: start;
+  }
+  .about-left { position: sticky; top: 8rem; }
+  .about-portrait {
+    width: 100%; aspect-ratio: 3/4;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-portrait-inner {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem; font-weight: 300;
+    color: var(--gold); opacity: 0.3;
+    letter-spacing: -0.04em;
+  }
+  .about-portrait::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+  }
+  .about-portrait-tag {
+    position: absolute; bottom: 1.5rem; left: 1.5rem;
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(10,10,8,0.8);
+    padding: 0.4rem 0.8rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .about-right {}
+  .about-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; line-height: 1.85;
+    color: var(--cream-dim);
+    margin-bottom: 2rem;
+  }
+  .about-text strong { color: var(--cream); font-weight: 600; }
+
+  .about-details {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .about-detail { border-left: 1px solid var(--border); padding-left: 1rem; }
+  .about-detail-label {
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .about-detail-val {
+    font-size: 0.85rem; color: var(--cream-dim);
+  }
+
+  /* EDUCATION */
+  #education { background: var(--bg); }
+
+  .edu-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .edu-card:hover { border-color: rgba(201,168,76,0.4); }
+  .edu-year {
+    font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .edu-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 600;
+    color: var(--cream); margin-bottom: 0.4rem;
+  }
+  .edu-inst {
+    font-size: 0.72rem; color: var(--accent2); margin-bottom: 0.5rem;
+  }
+  .edu-grade {
+    font-size: 0.65rem; color: var(--muted);
+  }
+  .edu-badge {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  /* CERTIFICATES */
+  #certificates { background: var(--bg2); }
+
+  .cert-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .cert-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: flex-start; gap: 1rem;
+    text-decoration: none; transition: all 0.3s;
+  }
+  .cert-card:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .cert-logo { font-size: 1.8rem; flex-shrink: 0; }
+  .cert-info {}
+  .cert-title {
+    font-size: 0.75rem; color: var(--cream-dim);
+    margin-bottom: 0.3rem; line-height: 1.4;
+  }
+  .cert-issuer {
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    color: var(--gold); text-transform: uppercase;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--bg); overflow: hidden; }
+
+  .contact-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center;
+  }
+  .contact-left {}
+  .contact-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 300; line-height: 1.05;
+    margin-bottom: 2rem;
+  }
+  .contact-heading em { font-style: italic; color: var(--gold2); }
+
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    text-decoration: none; padding: 1.2rem 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .contact-link::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold-dim); transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .contact-link:hover { border-color: var(--gold); }
+  .contact-link:hover::before { transform: translateX(0); }
+  .contact-link-icon { font-size: 1.3rem; position: relative; z-index: 1; }
+  .contact-link-info { position: relative; z-index: 1; }
+  .contact-link-label {
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.2rem;
+  }
+  .contact-link-val { font-size: 0.85rem; color: var(--cream-dim); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg2);
+  }
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 600; color: var(--gold2);
+  }
+  .footer-copy {
+    font-size: 0.65rem; letter-spacing: 0.12em; color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* REVEAL on scroll */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(.23,1,.32,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* DECORATIVE */
+  .deco-cross {
+    position: absolute;
+    color: var(--border);
+    font-size: 1.2rem;
+    user-select: none; pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* MARQUEE */
+  .marquee-wrapper {
+    overflow: hidden; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0; background: var(--surface);
+    margin: 0 -4rem;
+  }
+  .marquee-track {
+    display: flex; gap: 3rem;
+    animation: marquee 30s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap; flex-shrink: 0;
+  }
+  .marquee-item .dot { color: var(--gold); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 4rem; }
+    .hero-right { display: none; }
+    section { padding: 5rem 2rem; }
+    .expertise-categories { grid-template-columns: 1fr; }
+    .pbi-showcase { grid-template-columns: 1fr; }
+    .skills-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .about-layout { grid-template-columns: 1fr; }
+    .about-left { position: static; }
+    .contact-layout { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor cursor-ring" id="cursorRing"></div>
+<div class="cursor cursor-dot" id="cursorDot"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NB</a>
+  <ul class="nav-links">
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#powerbi">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text">DATA</div>
+
+  <div class="hero-left">
+    <div class="hero-tag">Available for Opportunities</div>
+    <h1 class="hero-name">Neeraj<br><em>Burra</em></h1>
+    <p class="hero-title">
+      HR Analyst <span>·</span> Data Analyst <span>·</span> Power BI Developer <span>·</span> MIS Analyst
+    </p>
+    <p class="hero-bio">
+      Bridging the gap between <em>human insight</em> and <em>data intelligence</em>. 
+      Specializing in HRMS implementation, Power BI development, and turning complex 
+      workforce data into strategic decisions.
+    </p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn btn-primary"><span>View Experience</span></a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="orb-container">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-center">
+        <div class="orb-num">10+</div>
+        <div class="orb-label">Years of<br>Experience</div>
+      </div>
+      <div class="stat-bubble" style="top:20px;right:-20px;">
+        <div class="stat-num">15%</div>
+        <div class="stat-desc">Productivity Boost</div>
+      </div>
+      <div class="stat-bubble" style="bottom:40px;left:-30px;">
+        <div class="stat-num">5+</div>
+        <div class="stat-desc">Industries Served</div>
+      </div>
+      <div class="stat-bubble" style="top:140px;left:-50px;">
+        <div class="stat-num">50+</div>
+        <div class="stat-desc">Skills Mastered</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item"><span class="dot">✦</span> Power BI Developer</span>
+    <span class="marquee-item"><span class="dot">✦</span> Oracle HCM Cloud</span>
+    <span class="marquee-item"><span class="dot">✦</span> HRMS Implementation</span>
+    <span class="marquee-item"><span class="dot">✦</span> DAX & SQL</span>
+    <span class="marquee-item"><span class="dot">✦</span> HR Analytics</span>
+    <span class="marquee-item"><span class="dot">✦</span> Data Visualization</span>
+    <span class="marquee-item"><span class="dot">✦</span> Workforce Management</span>
+    <span class="marquee-item"><span class="dot">✦</span> Power Apps & AppSheet</span>
+    <span class="marquee-item"><span class="dot">✦</span> VBA Macros</span>
+    <span class="marquee-item"><span class="dot">✦</span> Snowflake</span>
+    <!-- Duplicate for loop -->
+    <span class="marquee-item"><span class="dot">✦</span> Power BI Developer</span>
+    <span class="marquee-item"><span class="dot">✦</span> Oracle HCM Cloud</span>
+    <span class="marquee-item"><span class="dot">✦</span> HRMS Implementation</span>
+    <span class="marquee-item"><span class="dot">✦</span> DAX & SQL</span>
+    <span class="marquee-item"><span class="dot">✦</span> HR Analytics</span>
+    <span class="marquee-item"><span class="dot">✦</span> Data Visualization</span>
+    <span class="marquee-item"><span class="dot">✦</span> Workforce Management</span>
+    <span class="marquee-item"><span class="dot">✦</span> Power Apps & AppSheet</span>
+    <span class="marquee-item"><span class="dot">✦</span> VBA Macros</span>
+    <span class="marquee-item"><span class="dot">✦</span> Snowflake</span>
+  </div>
+</div>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Areas of <em>Expertise</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="expertise-categories">
+    <div class="cat-card reveal">
+      <div class="cat-icon">📊</div>
+      <div class="cat-title">Data & Analytics</div>
+      <div class="cat-desc">Power BI, DAX, SQL, ETL pipelines, predictive modeling, and real-time dashboards that transform raw data into strategic intelligence.</div>
+    </div>
+    <div class="cat-card reveal" style="transition-delay:0.1s">
+      <div class="cat-icon">👥</div>
+      <div class="cat-title">HR Operations</div>
+      <div class="cat-desc">End-to-end HRMS implementation, recruitment, payroll, performance management, compliance, and workforce planning across multi-industry environments.</div>
+    </div>
+    <div class="cat-card reveal" style="transition-delay:0.2s">
+      <div class="cat-icon">⚙️</div>
+      <div class="cat-title">Process Automation</div>
+      <div class="cat-desc">VBA macros, Power Apps, AppSheet integration, and MIS automation that eliminates manual effort and accelerates reporting velocity.</div>
+    </div>
+  </div>
+
+  <div class="expertise-grid reveal">
+    <div class="skill-tag"><span>Power BI</span></div>
+    <div class="skill-tag"><span>Oracle HCM</span></div>
+    <div class="skill-tag"><span>DAX</span></div>
+    <div class="skill-tag"><span>Power Query</span></div>
+    <div class="skill-tag"><span>SQL Queries</span></div>
+    <div class="skill-tag"><span>ETL</span></div>
+    <div class="skill-tag"><span>Data Modeling</span></div>
+    <div class="skill-tag"><span>Row Level Security</span></div>
+    <div class="skill-tag"><span>Paginated Reports</span></div>
+    <div class="skill-tag"><span>What-If Analysis</span></div>
+    <div class="skill-tag"><span>Predictive Analysis</span></div>
+    <div class="skill-tag"><span>Trend Analysis</span></div>
+    <div class="skill-tag"><span>Advanced Excel</span></div>
+    <div class="skill-tag"><span>VBA Macros</span></div>
+    <div class="skill-tag"><span>Keka HRMS</span></div>
+    <div class="skill-tag"><span>SAP SD & HR</span></div>
+    <div class="skill-tag"><span>PowerApps</span></div>
+    <div class="skill-tag"><span>AppSheet</span></div>
+    <div class="skill-tag"><span>Snowflake</span></div>
+    <div class="skill-tag"><span>UI/UX · Figma</span></div>
+    <div class="skill-tag"><span>HTML & CSS</span></div>
+    <div class="skill-tag"><span>WFM / RTA</span></div>
+    <div class="skill-tag"><span>Bulk Emailing</span></div>
+    <div class="skill-tag"><span>KPI Development</span></div>
+    <div class="skill-tag"><span>HR Matrices</span></div>
+    <div class="skill-tag"><span>Write-back</span></div>
+    <div class="skill-tag"><span>Data Integration</span></div>
+    <div class="skill-tag"><span>RDBMS Connect</span></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Work <em>Experience</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="exp-item">
+      <div class="exp-period">Aug 2025 — Present</div>
+      <div class="exp-role">HR Analyst</div>
+      <div class="exp-company">Patel Infrastructure Limited · Ahmedabad, GJ</div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">HRMS Design</span>
+        <span class="exp-highlight">Construction Sector</span>
+        <span class="exp-highlight">Payroll Modules</span>
+        <span class="exp-highlight">Digital Transformation</span>
+        <span class="exp-highlight">Multi-location HR</span>
+        <span class="exp-highlight">Workforce Compliance</span>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Sep 2023 — Aug 2025</div>
+      <div class="exp-role">Senior Officer — HR Analyst</div>
+      <div class="exp-company">Hexaware Technologies · Bhopal, MP</div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">Oracle HCM Cloud</span>
+        <span class="exp-highlight">Power BI Dashboards</span>
+        <span class="exp-highlight">HRIS Reporting</span>
+        <span class="exp-highlight">Real-time Adherence +15%</span>
+        <span class="exp-highlight">AppSheet Integration</span>
+        <span class="exp-highlight">Recruitment KPIs</span>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Nov 2021 — Jun 2023</div>
+      <div class="exp-role">MIS Manager</div>
+      <div class="exp-company">Agropreneurs United Trade House Ltd · Thiruvananthapuram, KL</div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">Leadership Dashboards</span>
+        <span class="exp-highlight">Data Pipelines</span>
+        <span class="exp-highlight">Predictive Modeling</span>
+        <span class="exp-highlight">Strategic Analytics</span>
+        <span class="exp-highlight">Data Governance</span>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Jan 2020 — Aug 2021</div>
+      <div class="exp-role">MIS Executive & Analyst</div>
+      <div class="exp-company">Quad Pro E Services · Bangalore, KA <em style="color:var(--muted)">(Contract)</em></div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">PFMS Portal</span>
+        <span class="exp-highlight">Govt. Onboarding</span>
+        <span class="exp-highlight">SAP SD</span>
+        <span class="exp-highlight">Beneficiary Management</span>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Sep 2018 — Apr 2019</div>
+      <div class="exp-role">IT Support</div>
+      <div class="exp-company">Vijeet Facility Management Pvt. Ltd · Ahmedabad, GJ <em style="color:var(--muted)">(Contract)</em></div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">IT Support</span>
+        <span class="exp-highlight">Systems Management</span>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">May 2013 — Aug 2018</div>
+      <div class="exp-role">SAP SD & MIS Executive</div>
+      <div class="exp-company">MP Urja Vikas Nigam Ltd · Bhopal, MP</div>
+      <div class="exp-highlights">
+        <span class="exp-highlight">SAP SD Module</span>
+        <span class="exp-highlight">E-Tendering</span>
+        <span class="exp-highlight">MP E-PROC Portal</span>
+        <span class="exp-highlight">GeM Portal</span>
+        <span class="exp-highlight">MIS Reporting</span>
+        <span class="exp-highlight">DBT Module</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POWER BI PROJECTS -->
+<section id="powerbi">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Power BI <em>Projects</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="pbi-showcase">
+    <div class="pbi-card reveal">
+      <div class="pbi-card-header">
+        <span class="pbi-icon">🏥</span>
+        <div class="pbi-card-title">Clinical Dashboard</div>
+      </div>
+      <div class="pbi-card-body">
+        <p class="pbi-card-desc">Interactive clinical analytics dashboard with real-time metrics, patient flow visualization, and performance KPIs for healthcare decision-making.</p>
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiZDI4MDlkY2EtNTQwZC00MDBiLWE2YzItZWMxOWNhZjE3ODI5IiwidCI6ImI3MzVkNTRjLWJiZmItNDM1Yi1hNGVlLTI0MjY5ZDFjMjZkNyJ9&pageName=ReportSectioncdf7253439cb71ad1e3d" class="pbi-link" target="_blank">View Live →</a>
+      </div>
+    </div>
+
+    <div class="pbi-card reveal" style="transition-delay:0.1s">
+      <div class="pbi-card-header">
+        <span class="pbi-icon">📈</span>
+        <div class="pbi-card-title">Business Health Dashboard</div>
+      </div>
+      <div class="pbi-card-body">
+        <p class="pbi-card-desc">Comprehensive business health monitoring with trend analysis, financial KPIs, and executive-level reporting for strategic decision support.</p>
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiODMyMTBlOWItYTRmNy00MDljLThmMjUtNmJlZTE5Y2Q5ZWY0IiwidCI6ImI3MzVkNTRjLWJiZmItNDM1Yi1hNGVlLTI0MjY5ZDFjMjZkNyJ9" class="pbi-link" target="_blank">View Live →</a>
+      </div>
+    </div>
+
+    <div class="pbi-card reveal" style="transition-delay:0.2s">
+      <div class="pbi-card-header">
+        <span class="pbi-icon">🎯</span>
+        <div class="pbi-card-title">Performance Dashboard</div>
+      </div>
+      <div class="pbi-card-body">
+        <p class="pbi-card-desc">Employee performance tracking system with goal alignment, appraisal analytics, recruiter KPIs, and real-time workforce adherence metrics.</p>
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiOTE4OTc1Y2MtZDE5Zi00YzM0LThlZjktN2VkZGVhZTFhN2UzIiwidCI6ImI3MzVkNTRjLWJiZmItNDM1Yi1hNGVlLTI0MjY5ZDFjMjZkNyJ9" class="pbi-link" target="_blank">View Live →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Technical <em>Proficiency</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-layout">
+    <div>
+      <p class="section-sub reveal" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;">Power BI & Analytics</p>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Power BI / DAX</span>
+          <span class="skill-meter-val">95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.95"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Data Modeling & ETL</span>
+          <span class="skill-meter-val">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.90"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">SQL & Database</span>
+          <span class="skill-meter-val">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.85"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Advanced Excel / VBA</span>
+          <span class="skill-meter-val">92%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.92"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Power Apps / AppSheet</span>
+          <span class="skill-meter-val">80%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.80"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Snowflake</span>
+          <span class="skill-meter-val">75%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.75"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <p class="section-sub reveal" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;">Human Resources</p>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">HRMS Implementation</span>
+          <span class="skill-meter-val">95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.95"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Oracle HCM Cloud</span>
+          <span class="skill-meter-val">88%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.88"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Talent Acquisition</span>
+          <span class="skill-meter-val">90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.90"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Payroll & Compliance</span>
+          <span class="skill-meter-val">85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.85"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">Workforce Management</span>
+          <span class="skill-meter-val">88%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.88"></div></div>
+      </div>
+      <div class="skill-meter reveal">
+        <div class="skill-meter-header">
+          <span class="skill-meter-name">SAP SD & HR</span>
+          <span class="skill-meter-val">82%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="0.82"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">About <em>Neeraj</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="about-layout">
+    <div class="about-left reveal">
+      <div class="about-portrait">
+        <div class="about-portrait-inner">NB</div>
+        <div class="about-portrait-tag">Bhopal, MP · India</div>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <p class="about-text reveal">
+        Rooted in a strong background across <strong>IT, non-IT, and construction industries</strong>, I've built a career in Human Resources focused on making systems smarter and more people-friendly.
+      </p>
+      <p class="about-text reveal">
+        I specialize in <strong>HRMS implementation, process automation, and data analysis</strong> — leveraging tools like Power BI and Excel to turn information into meaningful insight.
+      </p>
+      <p class="about-text reveal">
+        My journey has been shaped by hands-on experience in streamlining HR operations, driving efficiency, and aligning technology with human needs. I'm committed to blending <strong>data, automation, and empathy</strong> to build better workplaces.
+      </p>
+
+      <div class="about-details reveal">
+        <div class="about-detail">
+          <div class="about-detail-label">Location</div>
+          <div class="about-detail-val">Bhopal, Madhya Pradesh</div>
+        </div>
+        <div class="about-detail">
+          <div class="about-detail-label">Email</div>
+          <div class="about-detail-val">neerajburra@gmail.com</div>
+        </div>
+        <div class="about-detail">
+          <div class="about-detail-label">Phone</div>
+          <div class="about-detail-val">+91 907-4859-007</div>
+        </div>
+        <div class="about-detail">
+          <div class="about-detail-label">Status</div>
+          <div class="about-detail-val" style="color:var(--accent2)">● Available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title"><em>Education</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-badge">🎓</div>
+      <div class="edu-year">2018 — 2020</div>
+      <div class="edu-degree">MBA — IT & Human Resources</div>
+      <div class="edu-inst">Bhabha University, Bhopal</div>
+      <div class="edu-grade">63% · Master of Business Administration</div>
+    </div>
+    <div class="edu-card reveal" style="transition-delay:0.1s">
+      <div class="edu-badge">💻</div>
+      <div class="edu-year">2011 — 2014</div>
+      <div class="edu-degree">BCA — Computer Applications</div>
+      <div class="edu-inst">Makhanlal Chaturvedi National University, Bhopal</div>
+      <div class="edu-grade">62% · Bachelor of Computer Applications</div>
+    </div>
+    <div class="edu-card reveal" style="transition-delay:0.2s">
+      <div class="edu-badge">📚</div>
+      <div class="edu-year">2009</div>
+      <div class="edu-degree">Higher Secondary (12th)</div>
+      <div class="edu-inst">Red Rose School, Bhopal · State Board</div>
+      <div class="edu-grade">73%</div>
+    </div>
+    <div class="edu-card reveal" style="transition-delay:0.3s">
+      <div class="edu-badge">🏫</div>
+      <div class="edu-year">2007</div>
+      <div class="edu-degree">High School (10th)</div>
+      <div class="edu-inst">Red Rose School, Bhopal · State Board</div>
+      <div class="edu-grade">64%</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="section-header reveal">
+    <span class="section-num">07</span>
+    <h2 class="section-title"><em>Certifications</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cert-grid reveal">
+    <a href="https://drive.google.com/file/d/1mmPHG2rhmY0YJgdigFBQn6KVjgZYewLd/view?usp=drive_link" class="cert-card" target="_blank">
+      <div class="cert-logo">📊</div>
+      <div class="cert-info">
+        <div class="cert-title">Power BI Developer</div>
+        <div class="cert-issuer">Microsoft · Power BI</div>
+      </div>
+    </a>
+    <a href="https://drive.google.com/file/d/1gUArGbAiMdIzL_AipNOzqDxk1UQ57Xp4/view?usp=drive_link" class="cert-card" target="_blank">
+      <div class="cert-logo">📉</div>
+      <div class="cert-info">
+        <div class="cert-title">Business Analytics with Excel</div>
+        <div class="cert-issuer">Microsoft · Excel</div>
+      </div>
+    </a>
+    <a href="https://achieve.snowflake.com/d29369cc-7ffc-4f2a-8512-0064b68521e0#gs.76jrpb" class="cert-card" target="_blank">
+      <div class="cert-logo">❄️</div>
+      <div class="cert-info">
+        <div class="cert-title">Hands-On Essentials: Data Warehousing</div>
+        <div class="cert-issuer">Snowflake</div>
+      </div>
+    </a>
+    <a href="https://achieve.snowflake.com/a3dafb7b-cfb8-4926-a710-0359cdb98159#gs.76k0v7" class="cert-card" target="_blank">
+      <div class="cert-logo">❄️</div>
+      <div class="cert-info">
+        <div class="cert-title">Hands-On Essentials: Data Application Builders</div>
+        <div class="cert-issuer">Snowflake</div>
+      </div>
+    </a>
+    <a href="https://achieve.snowflake.com/b6bf2176-fef1-44cb-82ff-d2ee9bcddb2d#gs.76k8mk" class="cert-card" target="_blank">
+      <div class="cert-logo">❄️</div>
+      <div class="cert-info">
+        <div class="cert-title">Hands-On Essentials: Data Lake Workshop</div>
+        <div class="cert-issuer">Snowflake</div>
+      </div>
+    </a>
+    <div class="cert-card" style="border-style:dashed;cursor:default;opacity:0.5;">
+      <div class="cert-logo">+</div>
+      <div class="cert-info">
+        <div class="cert-title">Continuously learning new tools & certifications</div>
+        <div class="cert-issuer">In Progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="contact-left">
+      <h2 class="contact-heading reveal">Let's <em>Work<br>Together</em></h2>
+      <p class="reveal" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--cream-dim);line-height:1.8;max-width:400px;margin-bottom:3rem;">
+        Open to HR Analyst, Data Analyst, and Power BI Developer roles. Let's discuss how data-driven HR can transform your organization.
+      </p>
+    </div>
+    <div class="contact-right reveal">
+      <div class="contact-links">
+        <a href="mailto:neerajburra@gmail.com" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div class="contact-link-info">
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-val">neerajburra@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+919074859007" class="contact-link">
+          <div class="contact-link-icon">✆</div>
+          <div class="contact-link-info">
+            <div class="contact-link-label">Phone</div>
+            <div class="contact-link-val">+91 907-4859-007</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/neerajburra" target="_blank" class="contact-link">
+          <div class="contact-link-icon">in</div>
+          <div class="contact-link-info">
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-val">linkedin.com/in/neerajburra</div>
+          </div>
+        </a>
+        <a href="#" class="contact-link" style="opacity:0.5;pointer-events:none;">
+          <div class="contact-link-icon">📍</div>
+          <div class="contact-link-info">
+            <div class="contact-link-label">Location</div>
+            <div class="contact-link-val">Bhopal, Madhya Pradesh, India</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Neeraj Burra</div>
+  <div class="footer-copy">© 2025 · HR Analyst · Data Analyst · Power BI Developer</div>
+</footer>
+
+<script>
+  // CURSOR
+  const ring = document.getElementById('cursorRing');
+  const dot = document.getElementById('cursorDot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button, .skill-tag, .pbi-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '60px'; ring.style.height = '60px';
+      ring.style.opacity = '0.4';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.opacity = '0.7';
+    });
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal, .exp-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // animate skill bars
+        const fills = e.target.querySelectorAll('.skill-fill');
+        fills.forEach(f => {
+          setTimeout(() => {
+            f.style.transform = `scaleX(${f.dataset.width})`;
+            f.classList.add('animated');
+          }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  // Also observe skill fills directly
+  const skillFills = document.querySelectorAll('.skill-fill');
+  const fillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.style.transform = `scaleX(${e.target.dataset.width})`;
+        }, 300);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  skillFills.forEach(f => fillObserver.observe(f));
+  reveals.forEach(r => observer.observe(r));
+
+  // STAGGER experience items
+  document.querySelectorAll('.exp-item').forEach((item, i) => {
+    item.style.transitionDelay = `${i * 0.08}s`;
+    observer.observe(item);
+  });
+
+  // PARALLAX hero bg text
+  document.addEventListener('mousemove', e => {
+    const bgText = document.querySelector('.hero-bg-text');
+    if (bgText) {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      bgText.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    }
+  });
+</script>
+</body>
+</html>
