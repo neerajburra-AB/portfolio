@@ -173,30 +173,27 @@ nav {
 .hbtn-ghost { border: 1px solid var(--border); color: var(--bone3); }
 .hbtn-ghost:hover { border-color: var(--ember-border); color: var(--ember); }
 
-/* Right: Speech bubble */
-.hero-right {
-  display: flex; justify-content: flex-start; align-items: center;
-  opacity: 0; animation: fadeIn 1s .6s forwards;
+/* Right col — hidden, bubble moved to bottom bar */
+.hero-right { display: none; }
+
+/* Speech bubble — full-width bar sitting above metrics */
+.speech-bubble-bar {
+  position: relative; z-index: 10;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeIn 1s .9s forwards;
 }
 .speech-bubble {
-  width: 100%; max-width: 380px;
+  display: flex; align-items: center; gap: 1.5rem;
   background: var(--glass);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border);
-  padding: 1.5rem;
-  position: relative;
-}
-.speech-bubble::before {
-  content: '';
-  position: absolute; left: -10px; top: 50%;
-  transform: translateY(-50%);
-  border: 10px solid transparent;
-  border-right-color: var(--border);
+  border-left: 3px solid var(--ember);
+  padding: 1rem 1.5rem;
+  width: 100%;
 }
 .sb-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1rem; padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem;
+  flex-shrink: 0;
 }
 .sb-status {
   display: flex; align-items: center; gap: 0.5rem;
@@ -222,8 +219,11 @@ nav {
 
 .sb-text {
   font-family: 'DM Mono', monospace;
-  font-size: 0.82rem; line-height: 1.7;
-  color: var(--bone2); min-height: 56px;
+  font-size: 0.82rem; line-height: 1.5;
+  color: var(--bone2); flex: 1;
+}
+.sb-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; flex-shrink: 0;
 }
 .sb-cursor {
   display: inline-block; width: 2px; height: 1em;
@@ -233,7 +233,7 @@ nav {
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .sb-progress {
-  display: flex; gap: 4px; margin-top: 1rem;
+  display: flex; gap: 4px; width: 100px;
 }
 .sb-pip {
   flex: 1; height: 2px; background: var(--border); border-radius: 2px;
@@ -647,7 +647,7 @@ footer {
 
   <!-- Video Background -->
   <div class="hero-video-wrap">
-    <video id="heroVideo" autoplay loop muted playsinline>
+    <video id="heroVideo" autoplay loop playsinline>
       <source src="intro.mp4" type="video/mp4">
     </video>
     <div class="hero-grad-left"></div>
@@ -677,19 +677,22 @@ footer {
       </div>
     </div>
 
-    <!-- Right — Speech Bubble -->
-    <div class="hero-right">
-      <div class="speech-bubble">
-        <div class="sb-header">
-          <div class="sb-status">
-            <span class="sb-dot" id="sbDot"></span>
-            <span id="sbStatusTxt" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;color:rgba(240,235,224,0.4)">Live Audio</span>
-          </div>
-          <button class="sb-mute-btn" id="muteBtn" onclick="toggleMute()">Unmute Voice</button>
-        </div>
-        <div class="sb-text" id="sbText">
-          <span id="sbTyped"></span><span class="sb-cursor"></span>
-        </div>
+    <!-- Right col intentionally empty — bubble below -->
+    <div></div>
+  </div>
+
+  <!-- Speech Bubble — horizontal bar above metrics, clear of face -->
+  <div class="speech-bubble-bar">
+    <div class="speech-bubble">
+      <div class="sb-header">
+        <span class="sb-dot" id="sbDot"></span>
+        <span id="sbStatusTxt" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;color:rgba(240,235,224,0.4);white-space:nowrap">Live Audio</span>
+      </div>
+      <div class="sb-text">
+        <span id="sbTyped"></span><span class="sb-cursor"></span>
+      </div>
+      <div class="sb-right">
+        <button class="sb-mute-btn" id="muteBtn" onclick="toggleMute()">Mute Track</button>
         <div class="sb-progress" id="sbProgress"></div>
       </div>
     </div>
@@ -1095,6 +1098,16 @@ const videoEl=document.getElementById('heroVideo');
 const sbDotEl=document.getElementById('sbDot');
 const sbStatusTxt=document.getElementById('sbStatusTxt');
 const muteBtn=document.getElementById('muteBtn');
+
+// Browsers block autoplay with sound — handle gracefully
+videoEl.play().catch(()=>{
+  // If blocked, fall back to muted autoplay
+  videoEl.muted=true;
+  videoEl.play();
+  sbDotEl.classList.add('muted');
+  sbStatusTxt.textContent='Audio Blocked — Click Unmute';
+  muteBtn.textContent='Unmute Voice';
+});
 
 function toggleMute(){
   videoEl.muted=!videoEl.muted;
